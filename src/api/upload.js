@@ -40,6 +40,9 @@ export default async function (ctx) {
   }
   let record = new Image({ user: ctx.user });
   await record._.pic.upload(file);
+  if (record.pic._id) {
+    record._id = record.pic._id;
+  }
   await record.save();
   ctx.body = record.pic;
 }
