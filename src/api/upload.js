@@ -5,7 +5,7 @@
  */
 
 import service from '../';
-import Image from '../models/Image';
+import Upload from '../sleds/Upload';
 
 export default async function (ctx) {
   if (ctx.method !== 'POST') service.error(400);
@@ -16,33 +16,12 @@ export default async function (ctx) {
   if (ctx.files) {
     file = ctx.files.file;
   }
-  if (!file && body.data) {
-    let data = body.data || ctx.request.body.data;
-    if (data) {
-      if (Buffer.isBuffer(data)) {
-        //buffer
-        file = body.data;
-      } else if (typeof data === 'string') {
-        //base64
-        file = new Buffer(data, 'base64');
-      }
-    }
-  }
-  if (!file) service.error('No file found');
-  if (body.filename) {
-    file.filename = body.filename;
-  }
-  if (body.ext) {
-    file.ext = body.ext;
-  }
-  if (body.mime || body.mimeType) {
-    file.mime = body.mime || body.mimeType;
-  }
-  let record = new Image({ user: ctx.user });
-  await record._.pic.upload(file);
-  if (record.pic._id) {
-    record._id = record.pic._id;
-  }
-  await record.save();
-  ctx.body = record.pic;
+
+  let image = await Upload.run({
+    user: ctx.user,
+    file,
+    ...body
+  });
+
+  ctx.body = image.pic;
 }
