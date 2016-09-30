@@ -12,7 +12,7 @@ import Image from '../models/Image';
 
 export default class Upload extends alaska.Sled {
   async exec() {
-    let { file, data, url, user, headers, filename, ext, mimeType } = this.data;
+    let { file, data, url, user, headers, filename, ext, mimeType, returnImage } = this.data;
 
     if (!file && data) {
       if (Buffer.isBuffer(data)) {
@@ -50,6 +50,6 @@ export default class Upload extends alaska.Sled {
       record._id = record.pic._id;
     }
     await record.save();
-    return record;
+    return returnImage ? record.pic : record;
   }
 }

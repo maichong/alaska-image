@@ -1,6 +1,6 @@
 {
   "name": "alaska-image",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Alaska image service",
   "keywords": [
     "alaska",
@@ -27,8 +27,8 @@
     "url": "https://github.com/maichong/alaska-image/issues"
   },
   "homepage": "https://github.com/maichong/alaska-image#readme",
-  "peerDependencies": {
-    "alaska": "*",
+  "dependencies": {
+    "alaska-field-image": "*",
     "request-async": "*"
   }
 }
